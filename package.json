@@ -1,0 +1,15 @@
+{
+  "name": "quagga",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "html5-qrcode": "^2.3.8",
+    "vite": "^5.3.1"
+  }
+}
