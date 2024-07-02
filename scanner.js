@@ -162,7 +162,7 @@ export class BarcodeScanner {
                      },
                   }); 
                   const productData = await productResponse.json();
-                  await fetch(`https://api.au-aws.thewishlist.io/services/wsservice/api/wishlist/items`, {
+                  const addProductResponse = await fetch(`https://api.au-aws.thewishlist.io/services/wsservice/api/wishlist/items`, {
                      method: "POST",
                      headers: {
                         "accept": "application/json, text/plain, */*",
@@ -178,6 +178,16 @@ export class BarcodeScanner {
                         wishlistId: this.wishlistId,
                       })
                   });
+
+                  if (addProductResponse.status === 409) {
+                     const errorData = await addProductResponse.json();
+                     if (errorData.status && errorData.status === "CONFLICT") { 
+                        showToast("Product already exists in wishlist", "error");
+                        reject(errorData);
+                        return;
+                     }
+                  }
+
                   showToast("Product added to wishlist", "success"); 
                   resolve(productData);
                } catch (error) {
