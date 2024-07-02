@@ -161,6 +161,18 @@ export class BarcodeScanner {
                         "authorization": `Bearer ${this.accessToken}`,
                      },
                   }); 
+
+                  if (productResponse.status === 404) {
+                     const errorData = await productResponse.json();
+                     if (errorData.status && errorData.status === "NOT_FOUND") {
+                        console.log("Продукт не знайдено за штрих-кодом.");
+                        console.log(errorData.message);
+                        showToast("Product not found by barcode", "warning");
+                        reject(errorData);
+                        return;
+                     }
+                  }
+
                   const productData = await productResponse.json();
                   const addProductResponse = await fetch(`https://api.au-aws.thewishlist.io/services/wsservice/api/wishlist/items`, {
                      method: "POST",
